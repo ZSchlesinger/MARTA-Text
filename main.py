@@ -20,6 +20,8 @@ def sms_reply():
         resp.message("hi!")
     elif body == 'bye':
         resp.message("Goodbye")
+    else:
+        resp.message("nope")
 
     return str(resp)
 
