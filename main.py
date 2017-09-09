@@ -16,7 +16,7 @@ def test():
 def sms_reply():
     """Respond to incoming calls with simple text message."""
 
-    body = request.values.get('Body', None).lower()
+    body = str(request.values.get('Body', None)).lower()
 
     # Start our TwiML response
     resp = MessagingResponse()
