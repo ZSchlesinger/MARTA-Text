@@ -1,11 +1,13 @@
 <head></head>
 
 {% include "layout.html" %}
-<textarea id="messageField"></textarea>
-<button onclick="send()">Send</button>
+<form method="POST" action="http://martahacksapp.azurewebsites.net/sendsms">
+<textarea name="data" id="messageField"></textarea>
+<button type="submit">Send</button>
+</form>
 
 <script>
-    function send() {}
+    function send() {
         var xhttp = new XMLHttpRequest();
         xhttp.open("POST", 'http://martahacksapp.azurewebsites.net/sendsms', true);
         xhttp.setRequestHeader('Content-Type', 'application/json');

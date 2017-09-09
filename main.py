@@ -36,7 +36,7 @@ def send_sms():
         message = client.messages.create(
             to=str(number),
             from_="+14703001965",
-            body=request.values.get('Body', None)
+            body=request.args.get('data')
             )
 
 @app.route("/sms", methods =['GET', 'POST'])
