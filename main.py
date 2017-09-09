@@ -112,7 +112,7 @@ def sms_reply():
             users[key] = states['default']
     elif state == states['routeinfo']:
         response = getArrivalsForStation(corrected.upper())
-        if response == "":
+        if response == '':
             resp.message("Station not found")
         resp.message(response)
         users[key] = states['default']
@@ -133,7 +133,7 @@ def checkSerialNumber(serial):
 def getArrivalsForStation(station):
     resp = requests.get('http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=7e5d3ddb-a9fd-4165-8624-b8f3f27abfc2')
     if resp.status_code != 200:
-        return
+        return str(resp.status_code)
     stations = resp.json()
     matches = [d for d in stations if d['STATION'] == station]
     output = ''
