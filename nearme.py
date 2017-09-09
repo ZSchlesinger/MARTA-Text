@@ -17,8 +17,8 @@ def address_to_coord(address):
         location = api.geocode(address)
         coords = [(p['lat'], p['lng']) for p in [a['geometry']['location'] for a in location]]
         coord = coords[0]
-    except:
-        pass
+    except e:
+        coord = str(e)
     return coord
 
 def distance(a, b):
