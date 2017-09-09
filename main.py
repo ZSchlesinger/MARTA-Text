@@ -7,6 +7,7 @@ import random
 import requests
 import json
 import nearme
+import urllib2
 
 app = Flask(__name__)
 
@@ -29,7 +30,6 @@ def hello_world():
 @app.route('/test')
 def test_connect():
     try:
-        import urllib2
         url="http://google.com"
         page =urllib2.urlopen(url)
         data=page.read()
