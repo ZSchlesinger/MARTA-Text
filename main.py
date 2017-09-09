@@ -58,7 +58,7 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    commandList = ['helpme','stations', 'route info','outages','look up breeze card']
+    commandList = ['helpme','stations', 'route info','outages','breezecard']
     states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5, 'routeinfo':6}
 
     body = str(request.values.get('Body', None)).lower()
@@ -73,11 +73,6 @@ def sms_reply():
 
     # Start our TwiML response
     resp = MessagingResponse()
-
-    if body != corrected and corrected in commandList:
-        resp.message("Did you mean: " + corrected)
-        users[key] = -1
-        return str(resp)
 
     if body == "helpme":
         resp.message(constants.helpMessage)
@@ -120,6 +115,10 @@ def sms_reply():
             resp.message("Station not found")
             users[key] = states['default']
         resp.message(response)
+    elif body != corrected and corrected in commandList:
+        resp.message("Did you mean: " + corrected)
+        users[key] = -1
+        return str(resp)
     else:
         resp.message(constants.fallthroughMessage + "State: " + str(state))
 
