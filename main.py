@@ -46,7 +46,7 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
+    states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5, 'routeinfo':6}
     commandList = ['help','bus stations','train stations', 'route info','outages','look up breeze card']
 
     body = str(request.values.get('Body', None)).lower()
@@ -102,7 +102,7 @@ def sms_reply():
         else:
             resp.message(response)
             users[key] = states['default']
-    elif state == states['route info']:
+    elif state == states['routeinfo']:
         response = getArrivalsForStation(corrected).upper()
         if response == "":
             resp.message("Station not found")
