@@ -35,6 +35,10 @@ def test_connect():
     except e:
         return str(e)
 
+@app.route('/test2')
+def test_maps():
+    return str(nearme.closest_stop("Georgia Tech Station"))
+
 @app.route('/sendsms', methods=['POST'])
 def send_sms():
     account_sid = "ACdbeb4628fda468dbff0e2b41ab4af47a"
