@@ -31,8 +31,8 @@ def closest_stop_coord(coord):
     return sorted(list(bus_stops.keys()), key=lambda x : distance(coord, bus_stops[x]))[0]
 
 def closest_stop(address):
-    return str(address)
-    # a_coord = address_to_coord(address)
+    a_coord = address_to_coord(address)
+    return str(a_coord)
     # if a_coord is None:
 #        return None 
     #     return str(len(bus_stops))
