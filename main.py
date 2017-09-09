@@ -31,7 +31,7 @@ def send_sms():
     auth_token = "ca4bc7698e959f7e34948138a996c5fa"
 
     client = Client(account_sid, auth_token)
-
+    print(request.args.get('data'))
     for number in users:
         message = client.messages.create(
             to=str(number),
