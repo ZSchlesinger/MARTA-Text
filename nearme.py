@@ -60,8 +60,11 @@ def closest_stop_coord(coord):
 
 def closest_stop(address):
     a_coord = "test"
-    with no_ssl_verification:
-        a_coord = address_to_coord(address)
+    try:
+        with no_ssl_verification:
+            a_coord = address_to_coord(address)
+    except Exception as e:
+        a_coord = str(e)
     return str(a_coord)
     # if a_coord is None:
 #        return None 
