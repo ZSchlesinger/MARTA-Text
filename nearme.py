@@ -2,6 +2,34 @@ from gmaps import Geocoding
 import math
 import stops
 
+import warnings
+import requests
+import contextlib
+
+try:
+    from functools import partialmethod
+except ImportError:
+    # Python 2 fallback: https://gist.github.com/carymrobbins/8940382
+    from functools import partial
+
+    class partialmethod(partial):
+        def __get__(self, instance, owner):
+            if instance is None:
+                return self
+
+            return partial(self.func, instance, *(self.args or ()), **(self.keywords or {}))
+
+@contextlib.contextmanager
+def no_ssl_verification():
+    old_request = requests.Session.request
+    requests.Session.request = partialmethod(old_request, verify=False)
+
+    warnings.filterwarnings('ignore', 'Unverified HTTPS request')
+    yield
+    warnings.resetwarnings()
+
+    requests.Session.request = old_request
+
 api = Geocoding()
 bus_stops = None
 
@@ -31,7 +59,9 @@ def closest_stop_coord(coord):
     return sorted(list(bus_stops.keys()), key=lambda x : distance(coord, bus_stops[x]))[0]
 
 def closest_stop(address):
-    a_coord = address_to_coord(address)
+    a_coord = "test"
+    with no_ssl_verification:
+        a_coord = address_to_coord(address)
     return str(a_coord)
     # if a_coord is None:
 #        return None 
