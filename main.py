@@ -1,6 +1,7 @@
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 import constants
+from autocorrect import spell
 
 app = Flask(__name__)
 
