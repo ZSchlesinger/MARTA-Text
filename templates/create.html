@@ -1,19 +1,12 @@
-<head></head>
+<head>
+ <link href="{{ url_for('static', filename='app.css') }}" rel="stylesheet" />
+</head>
 
 {% include "layout.html" %}
-<form method="POST" action="https://f5aea391.ngrok.io/sendsms">
-<textarea name="data" id="messageField"></textarea>
-<button type="submit">Send</button>
-</form>
-
-<script>
-    function send() {
-        var xhttp = new XMLHttpRequest();
-        xhttp.open("POST", 'http://martahacksapp.azurewebsites.net/sendsms', true);
-        xhttp.setRequestHeader('Content-Type', 'application/json');
-        var data = {
-            "Body":messageField.value
-        };
-        xhttp.send();
-    }
-</script>
+<body>
+    <h2>You can use the MARTA dashboard to send out notifications to all of patrons who have ever used MARTA Text</h2>
+    <form method="POST" action="https://f5aea391.ngrok.io/sendsms">
+    <div><div class="container"><textarea name="data" id="messageField"></textarea></div></div>
+    <div><div class="container"><button type="submit">Send</button></div></div>
+    </form>
+</body>

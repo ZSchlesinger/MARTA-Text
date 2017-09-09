@@ -39,7 +39,7 @@ def send_sms():
             from_="+14703001965",
             body=request.form.get('Message from MARTA:' + 'data')
             )
-    return str(len(users))
+    return redirect('/dashboard')
 
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
