@@ -15,6 +15,7 @@ def create():
     return render_template(
         'create.html',
         title='Create Page',
+        name='Zach',
         year=6969,
         message="uh-huh hyuk"
         )
@@ -22,6 +23,20 @@ def create():
 @app.route('/')
 def hello_world():
     return redirect('/dashboard')
+
+@app.route('/sendsms', methods=['POST'])
+def send_sms():
+    account_sid = "ACdbeb4628fda468dbff0e2b41ab4af47a"
+    auth_token = "ca4bc7698e959f7e34948138a996c5fa"
+
+    client = Client(account_sid, auth_token)
+
+    for number in users:
+        message = client.messages.create(
+            to=str(number),
+            from_="+14703001965",
+            body=request.values.get('Body', None)
+            )
 
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
