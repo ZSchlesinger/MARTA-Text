@@ -59,7 +59,7 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    commandList = ['help','stations', 'route info','outages','look up breeze card']
+    commandList = ['helpme','stations', 'route info','outages','look up breeze card']
     states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5, 'routeinfo':6}
 
     body = str(request.values.get('Body', None)).lower()
