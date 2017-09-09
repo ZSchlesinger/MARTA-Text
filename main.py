@@ -7,7 +7,7 @@ import random
 import requests
 import json
 import nearme
-import urllib2
+from urllib.request import urlopen
 
 app = Flask(__name__)
 
@@ -30,10 +30,8 @@ def hello_world():
 @app.route('/test')
 def test_connect():
     try:
-        url="http://google.com"
-        page =urllib2.urlopen(url)
-        data=page.read()
-        return str(data)
+        html = urlopen("http://www.stackoverflow.com/").read().decode('utf-8')
+        return str(html)
     except e:
         return str(e)
 
