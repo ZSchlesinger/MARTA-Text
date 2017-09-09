@@ -7,6 +7,10 @@ app = Flask(__name__)
 def hello_world():
     return 'Hello, World!'
 
+@app.route("/hello")
+def test():
+    return 'testing'
+
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
     """Respond to incoming calls with simple text message."""
