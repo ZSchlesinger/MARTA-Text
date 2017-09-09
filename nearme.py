@@ -1,13 +1,12 @@
 from gmaps import Geocoding
 import math
+import stops
 
 api = Geocoding()
 bus_stops = None
 
-def load_bus_stops(filename="stops.txt"):
-    stops_file = open(filename, 'r')
-    stops_lines = stops_file.readlines()
-    stops_file.close()
+def load_bus_stops():
+    stops_lines = stops.data.split("\n")
     stops_data = {d[2] : (float(d[3]), float(d[4])) for d in [l.split(',') for l in stops_lines if l is not None and ',' in l and 'stop_name' not in l]}
     global bus_stops
     bus_stops = stops_data
@@ -34,5 +33,6 @@ def closest_stop_coord(coord):
 def closest_stop(address):
     a_coord = address_to_coord(address)
     if a_coord is None:
-        return None 
+#        return None 
+        return str(len(bus_stops))
     return closest_stop_coord(a_coord)
