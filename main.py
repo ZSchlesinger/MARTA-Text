@@ -106,7 +106,11 @@ def getArrivalsForStation(station):
 	if resp.status_code != 200:
 		return
 	stations = resp.json().loads()
-	return [d for d in stations if d['STATION'] == station]
+	matches = [d for d in stations if d['STATION'] == station]
+	output = ''
+	for match in matches:
+		output += match['LINE'] + ' to ' + match['DESTINATION'] + ' in ' + match['WAITING_TIME'] + '\n'
+    return output
 
 if __name__ == "__main__":
     app.run(debug=True)
