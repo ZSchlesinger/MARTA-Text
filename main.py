@@ -28,11 +28,14 @@ def hello_world():
 
 @app.route('/test')
 def test_connect():
-    import urllib2
-    url="http://google.com"
-    page =urllib2.urlopen(url)
-    data=page.read()
-    return str(data)
+    try:
+        import urllib2
+        url="http://google.com"
+        page =urllib2.urlopen(url)
+        data=page.read()
+        return str(data)
+    except e:
+        return str(e)
 
 @app.route('/sendsms', methods=['POST'])
 def send_sms():
