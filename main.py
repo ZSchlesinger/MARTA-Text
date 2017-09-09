@@ -51,7 +51,8 @@ def send_sms():
             from_="+14703001965",
             body='Message from MARTA:' + request.form.get('data')
             )
-    return redirect('/dashboard')
+    # return redirect('/dashboard')
+    return "asdf"
 
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
