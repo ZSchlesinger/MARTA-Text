@@ -16,7 +16,10 @@ def test():
 def sms_reply():
     """Respond to incoming calls with simple text message."""
 
-    body = str(request.values.get('Body', None)).lower()
+    commandList = ['help','stations near me','route info','outages','look up breeze card']
+
+    body = request.values.get('Body', None).lower()
+    corrected = ' '.join(map(lamda x: spell(x), body.split()))
 
     # Start our TwiML response
     resp = MessagingResponse()
@@ -25,6 +28,8 @@ def sms_reply():
         resp.message(constants.helpMessage)
     elif body == 'bye':
         resp.message("Goodbye")
+    elif body != corrected and corrected in commandList:
+    	resp.message("Did you mean: " + corrected)
     else:
         resp.message(constants.fallthroughMessage)
 
