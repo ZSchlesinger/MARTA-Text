@@ -18,7 +18,7 @@ def sms_reply():
 
     commandList = ['help','stations near me','route info','outages','look up breeze card']
 
-    body = request.values.get('Body', None).lower()
+    body = str(request.values.get('Body', None)).lower()
     corrected = ' '.join(map(lambda x: spell(x), body.split()))
 
     # Start our TwiML response
