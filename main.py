@@ -111,15 +111,15 @@ def sms_reply():
             resp.message(response)
             users[key] = states['default']
     elif state == states['routeinfo']:
+        resp.message('test')
         response = getArrivalsForStation(corrected.upper())
-        if response == '':
+        if len(response) > 0:
+            resp.message(response)
+        else:
             resp.message("Station not found")
-        resp.message(response)
         users[key] = states['default']
     elif body != corrected and corrected in commandList:
         resp.message("Did you mean: " + corrected)
-        users[key] = -1
-        return str(resp)
     else:
         resp.message(constants.fallthroughMessage + "State: " + str(state))
 
