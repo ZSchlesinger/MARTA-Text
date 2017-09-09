@@ -21,12 +21,12 @@ def sms_reply():
     # Start our TwiML response
     resp = MessagingResponse()
 
-    if body == 'help':
+    if body == 'helpme':
         resp.message(constants.helpMessage)
     elif body == 'bye':
         resp.message("Goodbye")
     else:
-        resp.message("nope")
+        resp.message(constants.fallthroughMessage)
 
     return str(resp)
 
