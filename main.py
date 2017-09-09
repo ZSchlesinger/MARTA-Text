@@ -3,6 +3,8 @@ from twilio.twiml.messaging_response import MessagingResponse
 import constants
 from autocorrect import spell
 import random
+import requests
+import json
 
 app = Flask(__name__)
 
@@ -86,6 +88,13 @@ def sms_reply():
 def checkSerialNumber(serial):
     serialnums = ['01641452714095607049', '22222222222222222222', '11111111111111111111', '99999999999999999999']
     return serial in serialnums
+
+def getArrivalsForStation(station):
+	resp = requests.get('http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=7e5d3ddb-a9fd-4165-8624-b8f3f27abfc2')
+	if resp.status_code != 200:
+		return
+	stations = resp.json().loads()
+	return [d for d in stations if d['STATION'] == station]
 
 if __name__ == "__main__":
     app.run(debug=True)
