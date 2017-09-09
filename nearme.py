@@ -34,5 +34,5 @@ def closest_stop_coord(coord):
 def closest_stop(address):
     a_coord = address_to_coord(address)
     if a_coord is None:
-        return "Address not found or invalid"
+        return None
     return closest_stop_coord(a_coord)
