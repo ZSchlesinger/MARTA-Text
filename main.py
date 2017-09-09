@@ -43,18 +43,14 @@ def test_maps():
 def send_sms():
     account_sid = "ACdbeb4628fda468dbff0e2b41ab4af47a"
     auth_token = "ca4bc7698e959f7e34948138a996c5fa"
-    response = "test"
-    try:
-        client = Client(account_sid, auth_token)
-        print(request.form.get('data'))
-        for number in users:
-            message = client.messages.create(
-                to=str(number),
-                from_="+14703001965",
-                body=request.form.get('Message from MARTA:' + 'data')
-                )
-    except Exception as e:
-        return str(e)
+    client = Client(account_sid, auth_token)
+    print(request.form.get('data'))
+    for number in users:
+        message = client.messages.create(
+            to=str(number),
+            from_="+14703001965",
+            body='Message from MARTA:' + request.form.get('data')
+            )
     return redirect('/dashboard')
 
 @app.route("/sms", methods =['GET', 'POST'])
