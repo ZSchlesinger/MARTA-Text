@@ -17,9 +17,11 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    commandList = ['help','stations near me','route info','outages','look up breeze card']
+    states = {'default':0, 'breezecard':1, 'busstation':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
+    commandList = ['help','bus stations','train stations', 'route info','outages','look up breeze card']
 
     body = str(request.values.get('Body', None)).lower()
+
     key = request.values.get('From', None)
 
     if key not in users:
@@ -31,31 +33,52 @@ def sms_reply():
     # Start our TwiML response
     resp = MessagingResponse()
 
-    if body != corrected:
-        resp.message("Did you mean: " + corrected)
-        users[key] = -1
+    # if body != corrected:
+    #     resp.message("Did you mean: " + corrected)
+    #     users[key] = -1
+    #     return str(resp)
+
+    if body == "helpme":
+        resp.message(constants.helpMessage)
         return str(resp)
 
-    if state == 0:
+    if body == "exit":
+        users[key] = states['default']
+        return str(resp)
+
+    if state == states['default']:
         if body == "breezecard":
-            users[key] = 1
+            users[key] = states['breezecard']
             resp.message(constants.breezecardMessage)
-    elif state == 1:
+        elif body == "bus stations":
+            users[key] = states['busstation']
+            resp.message("Enter your current address in the following format so we can get the nearest bus station. " + constants.sampleAddress)
+        elif body == "train stations":
+            users[key] = states['trainstation']
+            resp.message("Enter your current address in the following format so we can get the nearest train station. " + constants.sampleAddress)
+        elif body == "outages":
+            # TODO: add outage info
+            resp.message("These are the current outages:\n")
+        else:
+            resp.message(constats.fallthroughMessage)
+    elif state == states['breezecard']:
         if checkSerialNumber(body):
-            resp.message(random.randInt(0,100))
+            resp.message("Your breezecard balance is: " + str(random.randint(0,101)))
+            users[key] = states['default']
         else:
             resp.message("Invalid serial number. Try again")
+    elif state == states['busstation']:
+        if checkAddress(body):
+            resp.message(getClosestStation(busstations))
+        else:
+            resp.message("Invalid address. Try again")
+    elif state == states['trainstation']:
+        if checkAddress(body):
+            resp.message(getClosestStation(trainstations))
+        else:
+            resp.message("Invalid address. Try again")
     else:
-        resp.message(constants.fallthroughMessage)
-
-    # if body == 'helpme':
-        # resp.message(constants.helpMessage)
-    # elif body == 'bye':
-    #     resp.message("Goodbye")
-    # elif body != corrected and corrected in commandList:
-    # 	resp.message("Did you mean: " + corrected)
-    # else:
-    #     resp.message(constants.fallthroughMessage)
+        resp.message(constants.fallthroughMessage + "State: " + str(state))
 
     return str(resp)
 
