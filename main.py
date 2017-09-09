@@ -110,7 +110,7 @@ def getArrivalsForStation(station):
 	output = ''
 	for match in matches:
 		output += match['LINE'] + ' to ' + match['DESTINATION'] + ' in ' + match['WAITING_TIME'] + '\n'
-    return output
+	return output
 
 if __name__ == "__main__":
     app.run(debug=True)
