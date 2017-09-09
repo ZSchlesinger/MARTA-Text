@@ -38,6 +38,7 @@ def send_sms():
             from_="+14703001965",
             body=request.args.get('data')
             )
+    return str(len(users))
 
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
