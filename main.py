@@ -54,8 +54,8 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
     commandList = ['help','stations', 'route info','outages','look up breeze card']
+    states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5, 'routeinfo':6}
 
     body = str(request.values.get('Body', None)).lower()
 
@@ -93,6 +93,8 @@ def sms_reply():
         elif body == "outages":
             # TODO: add outage info
             resp.message("These are the current outages:\n")
+        elif body == "route info":
+            resp.message("Please enter the station:")
         else:
             resp.message(constants.fallthroughMessage)
     elif state == states['breezecard']:
@@ -108,6 +110,12 @@ def sms_reply():
         else:
             resp.message(response)
             users[key] = states['default']
+    elif state == states['routeinfo']:
+        response = getArrivalsForStation(corrected).upper()
+        if response == "":
+            resp.message("Station not found")
+            users[key] = states['default']
+        resp.message(response)
     else:
         resp.message(constants.fallthroughMessage + "State: " + str(state))
 
@@ -119,15 +127,15 @@ def checkSerialNumber(serial):
     return serial in serialnums
 
 def getArrivalsForStation(station):
-	resp = requests.get('http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=7e5d3ddb-a9fd-4165-8624-b8f3f27abfc2')
-	if resp.status_code != 200:
-		return
-	stations = resp.json()
-	matches = [d for d in stations if d['STATION'] == station]
-	output = ''
-	for match in matches:
-		output += match['LINE'] + ' to ' + match['DESTINATION'] + ' in ' + match['WAITING_TIME'] + '\n'
-	return output
+    resp = requests.get('http://developer.itsmarta.com/RealtimeTrain/RestServiceNextTrain/GetRealtimeArrivals?apikey=7e5d3ddb-a9fd-4165-8624-b8f3f27abfc2')
+    if resp.status_code != 200:
+        return
+    stations = resp.json()
+    matches = [d for d in stations if d['STATION'] == station]
+    output = ''
+    for match in matches:
+        output += match['LINE'] + ' to ' + match['DESTINATION'] + ' in ' + match['WAITING_TIME'] + '\n'
+    return output
 
 if __name__ == "__main__":
     app.run(debug=True)
