@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, render_template, redirect
 from twilio.twiml.messaging_response import MessagingResponse
 import constants
 from autocorrect import spell
@@ -8,9 +8,18 @@ app = Flask(__name__)
 
 users = {}
 
+@app.route('/dashboard')
+def create():
+    return render_template(
+        'create.html',
+        title='Create Page',
+        year=6969,
+        message="uh-huh hyuk"
+        )
+
 @app.route('/')
 def hello_world():
-    return 'Hello, Locquet!'
+    return redirect('/dashboard')
 
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
@@ -60,7 +69,7 @@ def sms_reply():
             # TODO: add outage info
             resp.message("These are the current outages:\n")
         else:
-            resp.message(constats.fallthroughMessage)
+            resp.message(constants.fallthroughMessage)
     elif state == states['breezecard']:
         if checkSerialNumber(body):
             resp.message("Your breezecard balance is: " + str(random.randint(0,101)))
@@ -81,6 +90,9 @@ def sms_reply():
         resp.message(constants.fallthroughMessage + "State: " + str(state))
 
     return str(resp)
+
+def checkAddress():
+    return false
 
 # checks if valid serial number
 def checkSerialNumber(serial):
