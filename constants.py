@@ -3,3 +3,4 @@ fallthroughMessage = "I didn't quite get that. Try another command or type helpm
 breezecardMessage = "Enter a valid breezecard serial #"
 notImplemented = "Not implemented yet!"
 sampleAddress = "930 Spring Street NW, Atlanta, GA"
+outages = "Test outages"

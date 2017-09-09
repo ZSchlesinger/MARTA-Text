@@ -91,9 +91,10 @@ def sms_reply():
             resp.message("Please enter your location:")
         elif body == "outages":
             # TODO: add outage info
-            resp.message("These are the current outages:\n")
+            resp.message("These are the current outages:\n" + constants.outages)
         elif body == "route info":
             resp.message("Please enter the station:")
+            users[key] = states['routeinfo']
         else:
             resp.message(constants.fallthroughMessage)
     elif state == states['breezecard']:
