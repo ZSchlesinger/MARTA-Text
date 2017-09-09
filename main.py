@@ -5,6 +5,7 @@ from autocorrect import spell
 import random
 import requests
 import json
+import nearme
 
 app = Flask(__name__)
 
@@ -28,7 +29,7 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
-    states = {'default':0, 'breezecard':1, 'busstation':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
+    states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
     commandList = ['help','bus stations','train stations', 'route info','outages','look up breeze card']
 
     body = str(request.values.get('Body', None)).lower()
@@ -61,12 +62,9 @@ def sms_reply():
         if body == "breezecard":
             users[key] = states['breezecard']
             resp.message(constants.breezecardMessage)
-        elif body == "bus stations":
-            users[key] = states['busstation']
-            resp.message("Enter your current address in the following format so we can get the nearest bus station. " + constants.sampleAddress)
-        elif body == "train stations":
-            users[key] = states['trainstation']
-            resp.message("Enter your current address in the following format so we can get the nearest train station. " + constants.sampleAddress)
+        elif body == "stations":
+            users[key] = states['station']
+            resp.message("Please enter your location:")
         elif body == "outages":
             # TODO: add outage info
             resp.message("These are the current outages:\n")
@@ -78,23 +76,17 @@ def sms_reply():
             users[key] = states['default']
         else:
             resp.message("Invalid serial number. Try again")
-    elif state == states['busstation']:
-        if checkAddress(body):
-            resp.message(getClosestStation(busstations))
+    elif state == states['station']:
+        response = nearme.closest_stop(body)
+        if response is None:
+            resp.message("Invalid address or address not found. Please try again")
         else:
-            resp.message("Invalid address. Try again")
-    elif state == states['trainstation']:
-        if checkAddress(body):
-            resp.message(getClosestStation(trainstations))
-        else:
-            resp.message("Invalid address. Try again")
+            resp.message(response)
+            users[key] = states['default']
     else:
         resp.message(constants.fallthroughMessage + "State: " + str(state))
 
     return str(resp)
-
-def checkAddress():
-    return false
 
 # checks if valid serial number
 def checkSerialNumber(serial):
