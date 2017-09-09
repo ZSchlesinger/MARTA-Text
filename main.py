@@ -3,6 +3,10 @@ from twilio.twiml.messaging_response import MessagingResponse
 
 app = Flask(__name__)
 
+@app.route('/')
+def hello_world():
+    return 'Hello, World!'
+
 @app.route("/sms", methods =['GET', 'POST'])
 def sms_reply():
     """Respond to incoming calls with simple text message."""
@@ -16,8 +20,6 @@ def sms_reply():
         resp.message("hi!")
     elif body == 'bye':
         resp.message("Goodbye")
-    else:
-        resp.message("alternate")
 
     return str(resp)
 
