@@ -26,6 +26,14 @@ def create():
 def hello_world():
     return redirect('/dashboard')
 
+@app.route('/test')
+def test_connect():
+    import urllib2
+    url="http://google.com"
+    page =urllib2.urlopen(url)
+    data=page.read()
+    return str(data)
+
 @app.route('/sendsms', methods=['POST'])
 def send_sms():
     account_sid = "ACdbeb4628fda468dbff0e2b41ab4af47a"
@@ -47,7 +55,7 @@ def sms_reply():
     global users
 
     states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5}
-    commandList = ['help','bus stations','train stations', 'route info','outages','look up breeze card']
+    commandList = ['help','stations', 'route info','outages','look up breeze card']
 
     body = str(request.values.get('Body', None)).lower()
 

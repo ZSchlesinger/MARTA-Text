@@ -4,3 +4,4 @@ autocorrect
 Jinja2
 python-gmaps
 requests
+urllib2
