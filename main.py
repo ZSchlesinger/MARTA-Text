@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+import constants
 
 app = Flask(__name__)
 
@@ -15,13 +16,13 @@ def test():
 def sms_reply():
     """Respond to incoming calls with simple text message."""
 
-    body = request.values.get('Body', None)
+    body = request.values.get('Body', None).lower()
 
     # Start our TwiML response
     resp = MessagingResponse()
 
-    if body == 'hello':
-        resp.message("hi!")
+    if body == 'help':
+        resp.message(constants.helpMessage)
     elif body == 'bye':
         resp.message("Goodbye")
     else:
