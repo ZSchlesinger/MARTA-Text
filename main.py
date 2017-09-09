@@ -1,5 +1,6 @@
 from flask import Flask, request, redirect, render_template, redirect
 from twilio.twiml.messaging_response import MessagingResponse
+from twilio.rest import Client
 import constants
 from autocorrect import spell
 import random
@@ -31,12 +32,12 @@ def send_sms():
     auth_token = "ca4bc7698e959f7e34948138a996c5fa"
 
     client = Client(account_sid, auth_token)
-    print(request.args.get('data'))
+    print(request.form.get('data'))
     for number in users:
         message = client.messages.create(
             to=str(number),
             from_="+14703001965",
-            body=request.args.get('data')
+            body=request.form.get('Message from MARTA:' + 'data')
             )
     return str(len(users))
 
