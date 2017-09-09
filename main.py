@@ -33,10 +33,10 @@ def sms_reply():
     # Start our TwiML response
     resp = MessagingResponse()
 
-    # if body != corrected:
-    #     resp.message("Did you mean: " + corrected)
-    #     users[key] = -1
-    #     return str(resp)
+    if body != corrected and corrected in commandList:
+        resp.message("Did you mean: " + corrected)
+        users[key] = -1
+        return str(resp)
 
     if body == "helpme":
         resp.message(constants.helpMessage)
