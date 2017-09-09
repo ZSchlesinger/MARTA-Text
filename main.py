@@ -7,6 +7,7 @@ import random
 import requests
 import json
 import nearme
+from urllib.request import urlopen
 
 app = Flask(__name__)
 
@@ -25,6 +26,18 @@ def create():
 @app.route('/')
 def hello_world():
     return redirect('/dashboard')
+
+@app.route('/test')
+def test_connect():
+    try:
+        html = urlopen("http://www.stackoverflow.com/").read().decode('utf-8')
+        return str(html)
+    except e:
+        return str(e)
+
+@app.route('/test2')
+def test_maps():
+    return str(nearme.closest_stop("Georgia Tech Station"))
 
 @app.route('/sendsms', methods=['POST'])
 def send_sms():
@@ -46,8 +59,8 @@ def sms_reply():
     """Respond to incoming calls with simple text message."""
     global users
 
+    commandList = ['help','stations', 'route info','outages','look up breeze card']
     states = {'default':0, 'breezecard':1, 'station':2, 'busstationaddress':3, 'trainstation':4, 'trainstationaddress':5, 'routeinfo':6}
-    commandList = ['help','bus stations','train stations', 'route info','outages','look up breeze card']
 
     body = str(request.values.get('Body', None)).lower()
 

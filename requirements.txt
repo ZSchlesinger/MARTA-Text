@@ -3,4 +3,4 @@ twilio
 autocorrect
 Jinja2
 python-gmaps
-requests
+requests==2.3
