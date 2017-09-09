@@ -111,7 +111,6 @@ def sms_reply():
             resp.message(response)
             users[key] = states['default']
     elif state == states['routeinfo']:
-        resp.message('test')
         response = getArrivalsForStation(corrected.upper())
         if len(response) > 0:
             resp.message(response)
